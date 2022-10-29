@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         buff市场饰品详细页面显示价格比率
+// @name         网易BUFF市场饰品交易功能脚本
 // @namespace    http://tampermonkey.net/
 // @version      0.5
-// @description  buff市场饰品详细页面显示价格比率
+// @description  网易BUFF市场饰品交易功能脚本
 // @author       Ultronxr
 // @match        https://buff.163.com/*
 // @icon         data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAFVBMVEVHcEwhIS0hISshISshISv///+QkJU/x7PBAAAABHRSTlMAJK7xdunbSwAAAFxJREFUeAFjYFR2QQJGAgzCLijAkEEFVcCJwQRVwJnBBQ2QKxAKBXgEwIpTw1AF3EJTEAJQBQgBhAKEQCqaoW5YbHGhuYAbqufCXFJRBVIoC1OMiMKISozIxkgOAEjZind3Npg5AAAAAElFTkSuQmCC
