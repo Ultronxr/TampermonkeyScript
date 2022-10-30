@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         网易BUFF市场饰品交易功能脚本
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/Ultronxr
 // @version      0.5
 // @description  网易BUFF市场饰品交易功能脚本
 // @author       Ultronxr
@@ -131,6 +131,8 @@
             // 已经在自动关闭排除列表中
             MENU_CMD_ID[2] = GM_registerMenuCommand(`${MENU_ALL[2][2]}`, function(){
                 GM_unregisterMenuCommand(MENU_CMD_ID[2]);
+                // 即将修改存储中的值时，先获取其最新值，再进行修改，防止别的网页对其修改的结果被覆盖
+                auto_close_exclude = GM_getValue(MENU_ALL[2][0]);
                 auto_close_exclude.splice(auto_close_exclude_index, 1);
                 GM_setValue(MENU_ALL[2][0], auto_close_exclude);
                 window.location.reload();
@@ -139,6 +141,8 @@
             // 不在自动关闭排除列表中
             MENU_CMD_ID[2] = GM_registerMenuCommand(`${MENU_ALL[2][1]}`, function(){
                 GM_unregisterMenuCommand(MENU_CMD_ID[2]);
+                // 即将修改存储中的值时，先获取其最新值，再进行修改，防止别的网页对其修改的结果被覆盖
+                auto_close_exclude = GM_getValue(MENU_ALL[2][0]);
                 auto_close_exclude.push(good_id);
                 GM_setValue(MENU_ALL[2][0], auto_close_exclude);
                 window.location.reload();
@@ -174,12 +178,16 @@
             MENU_CMD_ID[3] = GM_registerMenuCommand(`${MENU_ALL[3][1]}`, function(){
                 GM_unregisterMenuCommand(MENU_CMD_ID[3]);
                 let temp_price = prompt('输入价格监听线（价格低于或等于监听线时会提醒）');
-                if(/^\d+(\.\d+)?$/.test(temp_price) && temp_price >= 0.0 && temp_price <= 10000.0) {
-                    price_monitor[good_id] = parseFloat(temp_price);
-                    GM_setValue(MENU_ALL[3][0], price_monitor);
-                    window.location.reload();
-                } else {
-                    alert('输入内容格式错误，请重新输入！');
+                if(temp_price != null) {
+                    if(/^\d+(\.\d+)?$/.test(temp_price) && temp_price >= 0.0 && temp_price <= 10000.0) {
+                        // 即将修改存储中的值时，先获取其最新值，再进行修改，防止别的网页对其修改的结果被覆盖
+                        price_monitor = GM_getValue(MENU_ALL[3][0]);
+                        price_monitor[good_id] = parseFloat(temp_price);
+                        GM_setValue(MENU_ALL[3][0], price_monitor);
+                        window.location.reload();
+                    } else {
+                        alert('输入内容格式错误，请重新输入！');
+                    }
                 }
             });
             clearInterval(interval_price_monitor);
@@ -187,6 +195,8 @@
             // 对当前商品设置了价格监听
             MENU_CMD_ID[3] = GM_registerMenuCommand(`${MENU_ALL[3][2]+price_monitor[good_id]+' （点击禁用）'}`, function(){
                 GM_unregisterMenuCommand(MENU_CMD_ID[3]);
+                // 即将修改存储中的值时，先获取其最新值，再进行修改，防止别的网页对其修改的结果被覆盖
+                price_monitor = GM_getValue(MENU_ALL[3][0]);
                 delete price_monitor[good_id];
                 GM_setValue(MENU_ALL[3][0], price_monitor);
                 window.location.reload();
@@ -215,7 +225,7 @@
                         alert('价格低，可入手！');
                     }
                 }
-            }, 1000*60*3);
+            }, 1000*60*2);
         }
 
     }
